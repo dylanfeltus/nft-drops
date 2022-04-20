@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2022_04_20_014133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "post_id"
+    t.integer "subscriber_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text "content"
+    t.datetime "sent_at"
+    t.datetime "scheduled_for"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["scheduled_for"], name: "index_posts_on_scheduled_for"
+    t.index ["sent_at"], name: "index_posts_on_sent_at"
+  end
+
+  create_table "subscribers", force: :cascade do |t|
+    t.string "wallet"
+    t.string "transaction_hash"
+    t.string "webhook_url"
+    t.datetime "expires_at"
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["expires_at"], name: "index_subscribers_on_expires_at"
+  end
 
 end
