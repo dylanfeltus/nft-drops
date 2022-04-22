@@ -4,4 +4,9 @@ Rails.application.routes.draw do
   resources :subscribers, only: [:create]
 
   put "/subscribers/:wallet" => "subscribers#update"
+
+  # authenticate :admin_user do
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/admin/sidekiq'
+  # end
 end
